@@ -48,4 +48,15 @@ async def demo() -> None:
     debounce_result = await debounce(async_map, 2, async_square, nums)
     print(f"result: {debounce_result}")
 
-asyncio.run(demo())
+def demo_promise():
+    nums = [1, 2, 3, 4, 5, 6]
+
+    print("promise_map:")
+    result = promise_map(sync_square, nums)
+    print(f"result: {result}")
+
+if __name__ == "__main__":
+    print("===== Async Demo =====")
+    asyncio.run(demo())
+    print("\n===== Promise Demo =====")
+    demo_promise()
