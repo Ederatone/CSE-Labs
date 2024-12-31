@@ -26,15 +26,21 @@ async def debounce(func: Callable, delay: float, *args, **kwargs) -> Any:
         await asyncio.sleep(delay - elapsed_time)
     return result
 
+
+# promise map
 def promise_map(func: Callable, iterable: List[Any]) -> List[Any]:
     with ThreadPoolExecutor() as executor:
         futures = [executor.submit(func, item) for item in iterable]
         return [future.result() for future in futures]
 
+
+# sync version
 def sync_square(number: int) -> int:
     time.sleep(1)
     return number ** 2
 
+
+# parallel map
 async def async_parallel_map(func: Callable, iterable: List[Any], concurrency: int = 2) -> List[Any]:
     semaphore = asyncio.Semaphore(concurrency)
 
@@ -45,22 +51,25 @@ async def async_parallel_map(func: Callable, iterable: List[Any], concurrency: i
     tasks = [limited_task(item) for item in iterable]
     return await asyncio.gather(*tasks)
 
+
 # demo function
 async def demo() -> None:
     nums = [1, 2, 3, 4, 5, 6]
 
-    print("async_map:")
+    print("async map:")
     result = await async_map(async_square, nums)
     print(f"result: {result}")
 
-    print("\nasync_map with debounce:")
+    print("\nasync map with debounce:")
     debounce_result = await debounce(async_map, 2, async_square, nums)
     print(f"result: {debounce_result}")
 
-    print("\nasync_parallel_map:")
+    print("\nasync parallel map:")
     parallel_result = await async_parallel_map(async_square, nums, 2)
     print(f"result: {parallel_result}")
 
+
+# demo for promise
 def demo_promise():
     nums = [1, 2, 3, 4, 5, 6]
 
@@ -68,6 +77,8 @@ def demo_promise():
     result = promise_map(sync_square, nums)
     print(f"result: {result}")
 
+
+# to run demos
 if __name__ == "__main__":
     print("===== Async Demo =====")
     asyncio.run(demo())
