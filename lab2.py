@@ -1,6 +1,7 @@
 import asyncio
 import time
 from typing import Callable, List, Any
+from concurrent.futures import ThreadPoolExecutor
 
 
 # async map
@@ -24,6 +25,11 @@ async def debounce(func: Callable, delay: float, *args, **kwargs) -> Any:
     if elapsed_time < delay:
         await asyncio.sleep(delay - elapsed_time)
     return result
+
+def promise_map(func: Callable, iterable: List[Any]) -> List[Any]:
+    with ThreadPoolExecutor() as executor:
+        futures = [executor.submit(func, item) for item in iterable]
+        return [future.result() for future in futures]
 
 
 # demo function
