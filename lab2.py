@@ -31,6 +31,10 @@ def promise_map(func: Callable, iterable: List[Any]) -> List[Any]:
         futures = [executor.submit(func, item) for item in iterable]
         return [future.result() for future in futures]
 
+def sync_square(number: int) -> int:
+    time.sleep(1)
+    return number ** 2
+
 
 # demo function
 async def demo() -> None:
