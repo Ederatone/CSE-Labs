@@ -1,4 +1,5 @@
 import asyncio
+import time
 from typing import Callable, List, Any
 
 async def async_map(func: Callable, iterable: List[Any]) -> List[Any]:
@@ -9,11 +10,24 @@ async def async_square(number: int) -> int:
     await asyncio.sleep(1)
     return number ** 2
 
+async def debounce(func: Callable, delay: float, *args, **kwargs) -> Any:
+    start_time = time.monotonic()
+    result = await func(*args, **kwargs)
+    elapsed_time = time.monotonic() - start_time
+
+    if elapsed_time < delay:
+        await asyncio.sleep(delay - elapsed_time)
+    return result
+
 async def demo() -> None:
     nums = [1, 2, 3, 4, 5, 6]
 
     print("async_map:")
     result = await async_map(async_square, nums)
     print(f"result: {result}")
+
+    print("\nasync_map with debounce:")
+    debounce_result = await debounce(async_map, 2, async_square, nums)
+    print(f"result: {debounce_result}")
 
 asyncio.run(demo())
