@@ -57,6 +57,10 @@ async def demo() -> None:
     debounce_result = await debounce(async_map, 2, async_square, nums)
     print(f"result: {debounce_result}")
 
+    print("\nasync_parallel_map:")
+    parallel_result = await async_parallel_map(async_square, nums, 2)
+    print(f"result: {parallel_result}")
+
 def demo_promise():
     nums = [1, 2, 3, 4, 5, 6]
 
