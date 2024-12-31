@@ -35,6 +35,15 @@ def sync_square(number: int) -> int:
     time.sleep(1)
     return number ** 2
 
+async def async_parallel_map(func: Callable, iterable: List[Any], concurrency: int = 2) -> List[Any]:
+    semaphore = asyncio.Semaphore(concurrency)
+
+    async def limited_task(item):
+        async with semaphore:
+            return await func(item)
+
+    tasks = [limited_task(item) for item in iterable]
+    return await asyncio.gather(*tasks)
 
 # demo function
 async def demo() -> None:
