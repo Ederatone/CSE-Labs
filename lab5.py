@@ -13,3 +13,12 @@ class EventEmitter:
         if event_name in self.listeners:
             for callback in self.listeners[event_name]:
                 asyncio.create_task(callback(*args, **kwargs))
+
+class User:
+    def __init__(self, name, event_emitter):
+        self.name = name
+        self.event_emitter = event_emitter
+        self.event_emitter.on("message", self.receive_message)
+
+    async def receive_message(self, sender, message):
+        print(f"{self.name} received a message from {sender}: {message}")
