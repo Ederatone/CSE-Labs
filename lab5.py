@@ -1,5 +1,7 @@
 import asyncio
 
+
+# manage event subscriptions and emissions
 class EventEmitter:
     def __init__(self):
         self.listeners = {}
@@ -14,6 +16,8 @@ class EventEmitter:
             for callback in self.listeners[event_name]:
                 asyncio.create_task(callback(*args, **kwargs))
 
+
+# entity that reacts to events
 class User:
     def __init__(self, name, event_emitter):
         self.name = name
@@ -23,6 +27,8 @@ class User:
     async def receive_message(self, sender, message):
         print(f"{self.name} received a message from {sender}: {message}")
 
+
+# demo function
 async def demo():
     emitter = EventEmitter()
     user1 = User("Pablo", emitter)
@@ -35,5 +41,6 @@ async def demo():
     emitter.emit("message", user2.name, "Hi Pablo!")
     await asyncio.sleep(1)
 
+# run demo
 if __name__ == "__main__":
     asyncio.run(demo())
