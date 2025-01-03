@@ -14,3 +14,6 @@ async def process_large_file(file_path):
 def demo():
     file_path = "large_dataset.txt"
     asyncio.run(process_large_file(file_path))
+
+if __name__ == "__main__":
+    demo()
