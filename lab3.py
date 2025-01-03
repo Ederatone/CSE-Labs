@@ -2,6 +2,7 @@ import time
 import concurrent.futures
 import threading
 
+# cancels ongoing task
 class CancelTask:
     def __init__(self):
         self.cancel_event = threading.Event()
@@ -14,6 +15,8 @@ class CancelTask:
         future = self.executor.submit(task, *args, **kwargs)
         return future
 
+
+# simulation of long-running task
 def long_running_task(cancel_event):
     for i in range(10):
         if cancel_event.is_set():
@@ -23,6 +26,7 @@ def long_running_task(cancel_event):
         time.sleep(1)
     print(f"Task completed successfully")
 
+# demo function
 def demo():
     cancel_task = CancelTask()
 
@@ -38,5 +42,6 @@ def demo():
     except Exception as e:
         print(f"An error occurred: {e}")
 
+# run demo
 if __name__ == "__main__":
     demo()
