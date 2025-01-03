@@ -22,3 +22,15 @@ class User:
 
     async def receive_message(self, sender, message):
         print(f"{self.name} received a message from {sender}: {message}")
+
+async def demo():
+    emitter = EventEmitter()
+    user1 = User("Pablo", emitter)
+    user2 = User("Bob", emitter)
+
+    emitter.emit("message", user1.name, "Hello Bob!")
+    await asyncio.sleep(2)
+    print('\n')
+
+    emitter.emit("message", user2.name, "Hi Pablo!")
+    await asyncio.sleep(1)
